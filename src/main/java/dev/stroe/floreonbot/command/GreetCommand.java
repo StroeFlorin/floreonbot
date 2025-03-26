@@ -22,6 +22,6 @@ public class GreetCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Get a greeting from the bot";
+        return "Get a greeting from the bot.";
     }
 }

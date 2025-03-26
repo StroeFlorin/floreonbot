@@ -71,6 +71,6 @@ public class SummaryCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Get a summary of the conversation from last X hours";
+        return "Get a summary of the conversation from last X hours.";
     }
 }

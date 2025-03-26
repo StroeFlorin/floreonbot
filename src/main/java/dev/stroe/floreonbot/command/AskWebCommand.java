@@ -26,6 +26,6 @@ public class AskWebCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Ask ChatGPT anything, It will find the latest info online!";
+        return "Ask ChatGPT anything. It will search the internet.";
     }
 }

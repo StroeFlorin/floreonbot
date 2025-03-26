@@ -25,7 +25,8 @@ public class TelegramCommandHandlerService {
             HelpCommand helpCommand,
             SummaryCommand summaryCommand,
             AskWebCommand askWebCommand,
-            TelegramSendChatAction telegramSendChatAction) {
+            TelegramSendChatAction telegramSendChatAction,
+            WeatherCommand weatherCommand) {
         this.telegramSendMessage = telegramSendMessage;
         this.telegramSendChatAction = telegramSendChatAction;
 
@@ -35,6 +36,7 @@ public class TelegramCommandHandlerService {
         registerCommand("help", helpCommand);
         helpCommand.setCommandRegistry(commandRegistry);
         registerCommand("summary", summaryCommand);
+        registerCommand("weather", weatherCommand);
     }
 
     private void registerCommand(String commandName, Command command) {

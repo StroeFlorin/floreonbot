@@ -26,6 +26,6 @@ public class AskCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Ask ChatGPT a question";
+        return "Ask ChatGPT a question.";
     }
 }

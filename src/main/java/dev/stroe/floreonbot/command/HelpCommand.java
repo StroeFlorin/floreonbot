@@ -2,6 +2,7 @@ package dev.stroe.floreonbot.command;
 
 import java.util.Map;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import dev.stroe.floreonbot.service.TelegramSendMessageService;
 
@@ -9,6 +10,9 @@ import dev.stroe.floreonbot.service.TelegramSendMessageService;
 public class HelpCommand implements Command {
     private final TelegramSendMessageService telegramSendMessage;
     private Map<String, Command> commandRegistry;
+    
+    @Value("${app.version}")
+    private String appVersion;
 
     public HelpCommand(TelegramSendMessageService telegramSendMessage) {
         this.telegramSendMessage = telegramSendMessage;
@@ -27,12 +31,14 @@ public class HelpCommand implements Command {
                        .append(" - ").append(entry.getValue().getDescription())
                        .append("\n");
         }
+
+        helpMessage.append("\nApp Version: ").append(appVersion);
         
         telegramSendMessage.sendMessage(chatId, helpMessage.toString(), messageId);
     }
 
     @Override
     public String getDescription() {
-        return "Show available commands";
+        return "Show available commands.";
     }
 }
