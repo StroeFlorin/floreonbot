@@ -41,5 +41,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 - Telegram Bot API
 - OpenAI ChatGPT API
-- Weather API (Free)
+- OpenWeather API (Free tier)
 
