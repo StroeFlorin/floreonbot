@@ -13,12 +13,12 @@ import dev.stroe.floreonbot.repository.TelegramChatRepository;
 import dev.stroe.floreonbot.repository.TelegramMessageRepository;
 
 @Service
-public class DailySummaryScheduler {
+public class DailySummarySchedulerService {
     private final TelegramSendMessageService telegramSendMessageService;
     private final TelegramChatRepository telegramChatRepository;
     private final TelegramMessageRepository telegramMessageRepository;
 
-    public DailySummaryScheduler(TelegramSendMessageService telegramSendMessageService,
+    public DailySummarySchedulerService(TelegramSendMessageService telegramSendMessageService,
             TelegramMessageRepository telegramMessageRepository, TelegramChatRepository telegramChatRepository) {
         this.telegramChatRepository = telegramChatRepository;
         this.telegramSendMessageService = telegramSendMessageService;
@@ -34,7 +34,7 @@ public class DailySummaryScheduler {
                         (int) (System.currentTimeMillis() / 1000) - 86400,
                         (int) (System.currentTimeMillis() / 1000));
                 if (user != null) {
-                    String message = String.format("Most active chatter today was %s with %d messages!",
+                    String message = String.format("🥇 %s was the most active chatter today, posting %d messages! ",
                             user.getFullName(), getMessageCountOfUserToday(currentChatId, user.getId()));
                     telegramSendMessageService.sendMessage(currentChatId, message, null);
                 }
