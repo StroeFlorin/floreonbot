@@ -17,15 +17,12 @@ public class DailySummaryScheduler {
     private final TelegramSendMessageService telegramSendMessageService;
     private final TelegramChatRepository telegramChatRepository;
     private final TelegramMessageRepository telegramMessageRepository;
-    private final TelegramMessageService telegramMessageService;
 
     public DailySummaryScheduler(TelegramSendMessageService telegramSendMessageService,
-            TelegramMessageRepository telegramMessageRepository, TelegramChatRepository telegramChatRepository,
-            TelegramMessageService telegramMessageService) {
+            TelegramMessageRepository telegramMessageRepository, TelegramChatRepository telegramChatRepository) {
         this.telegramChatRepository = telegramChatRepository;
         this.telegramSendMessageService = telegramSendMessageService;
         this.telegramMessageRepository = telegramMessageRepository;
-        this.telegramMessageService = telegramMessageService;
     }
 
     @Scheduled(cron = "0 59 23 * * *")
