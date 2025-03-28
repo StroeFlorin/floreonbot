@@ -7,8 +7,8 @@ FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, desi
 - **Weather Checking**
 
   - Provides real-time weather information for a specified location.
-  - Example Usage: `/meteo Bucharest` or `/weather Bucharest`
-  - Utilizes a free weather API.
+  - Example Usage: `/weather Bucharest`
+  - Utilizes OpenWeather API.
 
 - **Conversation Summarization**
 
@@ -18,7 +18,7 @@ FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, desi
 - **Ask ChatGPT**
 
   - Allows users to ask questions and receive AI-generated responses from ChatGPT.
-  - Example Usage: `/askgpt Why are the plants green?`
+  - Example Usage: `/ask Why are the plants green?`
 
 - **Ask ChatGPT with Web Search**
 
@@ -31,7 +31,7 @@ FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, desi
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues, submit pull requests, or suggest new features.
+Contributions are welcome! Feel free to fork, open issues, submit pull requests, or suggest new features.
 
 ## License
 
@@ -41,5 +41,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 - Telegram Bot API
 - OpenAI ChatGPT API
-- Weather API (Free)
+- OpenWeather API (Free tier)
 
