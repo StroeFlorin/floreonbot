@@ -8,13 +8,13 @@ public class TelegramMessage {
     @Id
     private Long messageId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private TelegramUser from;
 
     private Integer date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "chat_id")
     private TelegramChat chat;
 
