@@ -31,6 +31,7 @@ public class TelegramSendMessageService {
         Map<String, String> body = new HashMap<>();
         body.put("chat_id", chatId);
         body.put("text", message);
+        body.put("disable_notification", "True");
         if (replyToMessageId != null) {
             body.put("reply_to_message_id", String.valueOf(replyToMessageId));
         }
