@@ -32,7 +32,7 @@ public class HelpCommand implements Command {
                        .append("\n");
         }
 
-        helpMessage.append("\nApp Version: ").append(appVersion);
+        helpMessage.append("\nBot Version: ").append(appVersion);
         
         telegramSendMessage.sendMessage(chatId, helpMessage.toString(), messageId);
     }

@@ -22,13 +22,13 @@ public interface TelegramMessageRepository extends JpaRepository<TelegramMessage
                    "      FROM telegram_message " +
                    "      WHERE chat_id = :chatId " +
                    "      AND date >= :todayStart AND date < :todayEnd " +
-                   "      GROUP BY user_id " +
-                   "      ORDER BY message_count DESC " +
-                   "      LIMIT 1) AS most_active " +
-                   "ON u.id = most_active.user_id", nativeQuery = true)
-    TelegramUser findMostActiveChatterByChatId(@Param("chatId") Long chatId, 
-                                              @Param("todayStart") Integer todayStart, 
-                                              @Param("todayEnd") Integer todayEnd);
+                   "      GROUP BY user_id) AS most_active " +
+                   "ON u.id = most_active.user_id " +
+                   "ORDER BY most_active.message_count DESC " +
+                   "LIMIT 3", nativeQuery = true)
+    List<TelegramUser> findTopMostActiveChattersByChatId(@Param("chatId") Long chatId, 
+                                              @Param("todayStart") Long todayStart, 
+                                              @Param("todayEnd") Long todayEnd);
 
     @Query(value = "SELECT COUNT(*) FROM telegram_message WHERE chat_id = :chatId AND user_id = :userId AND date >= :todayStart AND date < :todayEnd", nativeQuery = true)
     long countMessagesByChatIdAndUserIdToday(@Param("chatId") Long chatId, @Param("userId") Long userId, @Param("todayStart") Long todayStart, @Param("todayEnd") Long todayEnd);
