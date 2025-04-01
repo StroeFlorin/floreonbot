@@ -44,7 +44,7 @@ public class WeatherForecastCommand implements Command {
     @Override
     public void execute(String text, Long chatId, Long userId, Long messageId) {
         if (text == null || text.trim().isEmpty()) {
-            messageService.sendMessage(chatId, "Please provide a location. Usage: /weather [city name]", messageId);
+            messageService.sendMessage(chatId, "Please provide a location. Usage: /weatherforecast [city name]", messageId);
             return;
         }
 
@@ -216,6 +216,6 @@ public class WeatherForecastCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Get the weather forecast for a location. Usage: /weather [city name]";
+        return "Get a 7-day forecast for a location.";
     }
 }
