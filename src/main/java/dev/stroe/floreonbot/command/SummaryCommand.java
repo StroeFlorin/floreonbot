@@ -23,7 +23,7 @@ public class SummaryCommand implements Command {
     }
 
     @Override
-    public void execute(String text, Long chatId, Long userId, Long messageId) {
+    public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
         try {
             int hours = Integer.parseInt(text);
             

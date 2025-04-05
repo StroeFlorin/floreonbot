@@ -43,7 +43,7 @@ public class WeatherCommand implements Command {
     }
 
     @Override
-    public void execute(String text, Long chatId, Long userId, Long messageId) {
+    public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
         if (text == null || text.trim().isEmpty()) {
             messageService.sendMessage(chatId, "Please provide a location. Usage: /weather [city name]", messageId);
             return;

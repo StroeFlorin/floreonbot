@@ -15,7 +15,7 @@ public class JokeCommand implements Command {
     }
 
     @Override
-    public void execute(String text, Long chatId, Long userId, Long messageId) {
+    public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
         String gptResponse="";
         if(text == null || text.isEmpty()) {
             gptResponse = chatGPTService.chatGPTResponse("Tell me a joke in romanian.", false);

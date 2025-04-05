@@ -29,6 +29,7 @@ public class TelegramCommandHandlerService {
             WeatherCommand weatherCommand,
             VanishCommand vanishCommand,
             JokeCommand jokeCommand,
+            TopCommand topCommand,
             WeatherForecastCommand weatherForecastCommand) {
         this.telegramSendMessage = telegramSendMessage;
         this.telegramSendChatAction = telegramSendChatAction;
@@ -41,8 +42,11 @@ public class TelegramCommandHandlerService {
         registerCommand("summary", summaryCommand);
         registerCommand("vanish", vanishCommand);
         registerCommand("joke", jokeCommand);
-        registerCommand("weatherforecast", weatherForecastCommand);
-        registerCommand("weather", weatherCommand);
+        registerCommand("top", topCommand);
+        registerCommand("temperature", new CommandWrapper(weatherForecastCommand, "temperature"));
+        registerCommand("meteo", new CommandWrapper(weatherForecastCommand, "meteo"));
+        registerCommand("weather", new CommandWrapper(weatherForecastCommand, "weather"));
+        registerCommand("weatherforecast", new CommandWrapper(weatherForecastCommand, "weatherforecast"));
     }
 
     private void registerCommand(String commandName, Command command) {
@@ -65,7 +69,7 @@ public class TelegramCommandHandlerService {
         Command command = commandRegistry.get(commandName);
         if (command != null) {
             telegramSendChatAction.sendTypingAction(chatId);
-            command.execute(args, chatId, userId, messageId);
+            command.execute(commandName, args, chatId, userId, messageId);
         } else {
             // Handle unknown command
             telegramSendMessage.sendMessage(chatId, "Unknown command: " + commandName, messageId);

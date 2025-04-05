@@ -28,7 +28,7 @@ public class DailySummarySchedulerService {
         this.telegramMessageRepository = telegramMessageRepository;
     }
 
-    @Scheduled(cron = "0 30 13 * * *")
+    @Scheduled(cron = "0 59 23 * * *")
     public void sendDailySummary() {
         List<TelegramChat> chats = telegramChatRepository.findAll();
         today = LocalDate.now();

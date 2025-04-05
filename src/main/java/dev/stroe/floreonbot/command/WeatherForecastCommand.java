@@ -30,7 +30,8 @@ public class WeatherForecastCommand implements Command {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private final Map<Integer, String> weatherCodeMap;
-    
+    private String command = "";
+
     public WeatherForecastCommand(
             @Value("${openweather.api.key}") String apiKey,
             TelegramSendMessageService telegramSendMessageService) {
@@ -42,11 +43,13 @@ public class WeatherForecastCommand implements Command {
     }
 
     @Override
-    public void execute(String text, Long chatId, Long userId, Long messageId) {
+    public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
         if (text == null || text.trim().isEmpty()) {
-            messageService.sendMessage(chatId, "Please provide a location. Usage: /weatherforecast [city name]", messageId);
+            messageService.sendMessage(chatId, "Please provide a location. Usage: /" + commandName + " [city name]", messageId);
             return;
         }
+        
+        command = commandName;
 
         try {
             // 1. Get coordinates from location name
@@ -65,8 +68,8 @@ public class WeatherForecastCommand implements Command {
             // 2. Get weather forecast using coordinates
             JsonNode weatherData = getWeatherForecast(lat, lon);
             
-            // 3. Format and send the message
-            String weatherMessage = formatWeatherMessage(weatherData, locationName + ", " + country);
+            // 3. Format and send the message based on command
+            String weatherMessage = formatWeatherMessage(weatherData, locationName + ", " + country, commandName);
             messageService.sendMessage(chatId, weatherMessage, messageId);
 
         } catch (IOException | InterruptedException e) {
@@ -112,16 +115,43 @@ public class WeatherForecastCommand implements Command {
         return objectMapper.readTree(response.body());
     }
     
-    private String formatWeatherMessage(JsonNode weatherData, String location) {
+    private String formatWeatherMessage(JsonNode weatherData, String location, String commandName) {
+        switch (commandName) {
+            case "temperature":
+                return formatTemperatureMessage(weatherData, location);
+            case "meteo":
+            case "weather":
+                return formatCurrentWeatherMessage(weatherData, location);
+            case "weatherforecast":
+            default:
+                return formatFullForecastMessage(weatherData, location);
+        }
+    }
+    
+    private String formatTemperatureMessage(JsonNode weatherData, String location) {
         StringBuilder message = new StringBuilder();
-        message.append("Weather Forecast for ").append(location).append(" \n\n");
+        JsonNode current = weatherData.get("current");
+        
+        double currentTemp = current.get("temperature_2m").asDouble();
+        double feelsLikeTemp = current.get("apparent_temperature").asDouble();
+        
+        message.append("Temperature in ").append(location).append(":\n\n");
+        message.append("🌡️ Current: ").append(currentTemp).append("°C\n");
+        message.append("🌡️ Feels like: ").append(feelsLikeTemp).append("°C");
+        
+        return message.toString();
+    }
+    
+    private String formatCurrentWeatherMessage(JsonNode weatherData, String location) {
+        StringBuilder message = new StringBuilder();
+        message.append("Current Weather in ").append(location).append(":\n\n");
         
         // Current weather
         JsonNode current = weatherData.get("current");
         int currentWeatherCode = current.get("weather_code").asInt();
         String weatherDescription = getWeatherDescription(currentWeatherCode);
         
-        // Extract current weather data into variables
+        // Extract current weather data
         double currentTemp = current.get("temperature_2m").asDouble();
         double feelsLikeTemp = current.get("apparent_temperature").asDouble();
         int humidity = current.get("relative_humidity_2m").asInt();
@@ -133,7 +163,6 @@ public class WeatherForecastCommand implements Command {
         String sunset = daily.get("sunset").get(0).asText().substring(11, 16);   // Extract HH:MM
         int todayPrecipitationChance = daily.get("precipitation_probability_max").get(0).asInt();
         
-        message.append("Current Conditions:\n\n");
         message.append(weatherDescription).append("\n");
         message.append("🌡️ Temperature: ").append(currentTemp).append("°C ");
         message.append("(feels like: ").append(feelsLikeTemp).append("°C)\n");
@@ -141,8 +170,18 @@ public class WeatherForecastCommand implements Command {
         message.append("💨 Wind: ").append(windSpeed).append(" km/h\n");
         message.append("🌧️ Precipitation probability: ").append(todayPrecipitationChance).append("%\n");
         message.append("🌅 Sunrise: ").append(sunrise).append("\n");
-        message.append("🌇 Sunset: ").append(sunset).append("\n\n\n");
+        message.append("🌇 Sunset: ").append(sunset);
         
+        return message.toString();
+    }
+    
+    private String formatFullForecastMessage(JsonNode weatherData, String location) {
+        StringBuilder message = new StringBuilder();
+        message.append("Weather Forecast for ").append(location).append(" \n\n");
+        
+        // Get today's data from daily forecast
+        JsonNode daily = weatherData.get("daily");
+    
         // Daily forecast
         JsonNode times = daily.get("time");
         JsonNode weatherCodes = daily.get("weather_code");
@@ -216,6 +255,21 @@ public class WeatherForecastCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Get a 7-day forecast for a location.";
+        return getDescriptionForCommand(command);
+    }
+    
+    public String getDescriptionForCommand(String commandName) {
+        switch(commandName) {
+            case "temperature":
+                return "Get the current temperature for a location.";
+            case "meteo":
+                return "Get the current weather for a location.";
+            case "weather":
+                return "Get the current weather for a location.";
+            case "weatherforecast":
+                return "Get a 7-day weather forecast for a location.";
+            default:
+                return "Get weather information for a location.";
+        }
     }
 }

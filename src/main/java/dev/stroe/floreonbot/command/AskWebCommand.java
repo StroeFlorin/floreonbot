@@ -15,7 +15,7 @@ public class AskWebCommand implements Command {
     }
 
     @Override
-    public void execute(String text, Long chatId, Long userId, Long messageId) {
+    public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
         if (!text.isEmpty()) {
             String gptResponse = chatGPT.chatGPTResponse(text, true);
             telegramSendMessage.sendMessage(chatId, gptResponse, messageId);

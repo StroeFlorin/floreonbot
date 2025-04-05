@@ -15,7 +15,7 @@ public class GreetCommand implements Command {
     }
 
     @Override
-    public void execute(String text, Long chatId, Long userId, Long messageId) {
+    public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
         String fullName = messageRepository.findById(messageId).get().getFrom().getFullName();
         telegramSendMessage.sendMessage(chatId, "Hello, " + fullName + "!", messageId);
     }
