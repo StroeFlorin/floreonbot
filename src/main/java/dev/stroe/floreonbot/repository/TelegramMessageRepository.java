@@ -32,4 +32,7 @@ public interface TelegramMessageRepository extends JpaRepository<TelegramMessage
 
     @Query(value = "SELECT COUNT(*) FROM telegram_message WHERE chat_id = :chatId AND user_id = :userId AND date >= :todayStart AND date < :todayEnd", nativeQuery = true)
     long countMessagesByChatIdAndUserIdToday(@Param("chatId") Long chatId, @Param("userId") Long userId, @Param("todayStart") Long todayStart, @Param("todayEnd") Long todayEnd);
+    
+    @Query(value = "SELECT text FROM telegram_message WHERE chat_id = :chatId AND user_id = :userId AND date >= :todayStart AND date < :todayEnd AND text IS NOT NULL", nativeQuery = true)
+    List<String> findMessageTextsByChatIdAndUserIdToday(@Param("chatId") Long chatId, @Param("userId") Long userId, @Param("todayStart") Long todayStart, @Param("todayEnd") Long todayEnd);
 }

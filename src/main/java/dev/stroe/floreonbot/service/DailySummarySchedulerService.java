@@ -28,7 +28,7 @@ public class DailySummarySchedulerService {
         this.telegramMessageRepository = telegramMessageRepository;
     }
 
-    @Scheduled(cron = "0 59 23 * * *")
+    @Scheduled(cron = "0 30 13 * * *")
     public void sendDailySummary() {
         List<TelegramChat> chats = telegramChatRepository.findAll();
         today = LocalDate.now();
@@ -49,10 +49,11 @@ public class DailySummarySchedulerService {
                     for (int i = 0; i < topChatters.size(); i++) {
                         TelegramUser user = topChatters.get(i);
                         String emoji = i == 0 ? "🥇" : (i == 1 ? "🥈" : "🥉");
-                        message.append(String.format("%s %s: %d messages\n", 
+                        message.append(String.format("%s %s: %d messages (%d words)\n", 
                                 emoji, 
                                 user.getFullName(),
-                                getMessageCountOfUserToday(currentChatId, user.getId())));
+                                getMessageCountOfUserToday(currentChatId, user.getId()),
+                                getWordCountOfUserToday(currentChatId, user.getId())));
                     }
                     
                     telegramSendMessageService.sendMessage(currentChatId, message.toString(), null);
@@ -63,5 +64,21 @@ public class DailySummarySchedulerService {
     public long getMessageCountOfUserToday(Long chatId, Long userId) {
         return telegramMessageRepository.countMessagesByChatIdAndUserIdToday(
             chatId, userId, todayStart, todayEnd);
+    }
+    
+    public long getWordCountOfUserToday(Long chatId, Long userId) {
+        List<String> messageTexts = telegramMessageRepository.findMessageTextsByChatIdAndUserIdToday(
+            chatId, userId, todayStart, todayEnd);
+        
+        long totalWords = 0;
+        for (String text : messageTexts) {
+            if (text != null && !text.trim().isEmpty()) {
+                // Split on whitespace and count the resulting array length
+                String[] words = text.trim().split("\\s+");
+                totalWords += words.length;
+            }
+        }
+        
+        return totalWords;
     }
 }
