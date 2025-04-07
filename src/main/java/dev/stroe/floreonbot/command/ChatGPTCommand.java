@@ -5,11 +5,11 @@ import dev.stroe.floreonbot.service.ChatGPTService;
 import dev.stroe.floreonbot.service.TelegramSendMessageService;
 
 @Component
-public class AskCommand implements Command {
+public class ChatGPTCommand implements Command {
     private final ChatGPTService chatGPT;
     private final TelegramSendMessageService telegramSendMessage;
 
-    public AskCommand(ChatGPTService chatGPT, TelegramSendMessageService telegramSendMessage) {
+    public ChatGPTCommand(ChatGPTService chatGPT, TelegramSendMessageService telegramSendMessage) {
         this.chatGPT = chatGPT;
         this.telegramSendMessage = telegramSendMessage;
     }
@@ -20,7 +20,7 @@ public class AskCommand implements Command {
             String gptResponse = chatGPT.chatGPTResponse(text, false);
             telegramSendMessage.sendMessage(chatId, gptResponse, messageId);
         } else {
-            telegramSendMessage.sendMessage(chatId, "Please provide a question after /ask command!", messageId);
+            telegramSendMessage.sendMessage(chatId, "Please provide a question after /chatgpt command!", messageId);
         }
     }
 

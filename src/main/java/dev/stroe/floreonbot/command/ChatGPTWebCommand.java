@@ -5,11 +5,11 @@ import dev.stroe.floreonbot.service.ChatGPTService;
 import dev.stroe.floreonbot.service.TelegramSendMessageService;
 
 @Component
-public class AskWebCommand implements Command {
+public class ChatGPTWebCommand implements Command {
     private final ChatGPTService chatGPT;
     private final TelegramSendMessageService telegramSendMessage;
 
-    public AskWebCommand(ChatGPTService chatGPT, TelegramSendMessageService telegramSendMessage) {
+    public ChatGPTWebCommand(ChatGPTService chatGPT, TelegramSendMessageService telegramSendMessage) {
         this.chatGPT = chatGPT;
         this.telegramSendMessage = telegramSendMessage;
     }

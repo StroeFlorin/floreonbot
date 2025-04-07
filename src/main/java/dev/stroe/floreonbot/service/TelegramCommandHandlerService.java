@@ -20,33 +20,33 @@ public class TelegramCommandHandlerService {
 
     public TelegramCommandHandlerService(
             TelegramSendMessageService telegramSendMessage,
-            AskCommand askCommand,
+            ChatGPTCommand askCommand,
             GreetCommand greetCommand,
             HelpCommand helpCommand,
             SummaryCommand summaryCommand,
-            AskWebCommand askWebCommand,
+            ChatGPTWebCommand askWebCommand,
             TelegramSendChatAction telegramSendChatAction,
             WeatherCommand weatherCommand,
             VanishCommand vanishCommand,
             JokeCommand jokeCommand,
-            TopCommand topCommand,
-            WeatherForecastCommand weatherForecastCommand) {
+            WeatherForecastCommand weatherForecastCommand,
+            GeminiCommand geminiCommand) {
         this.telegramSendMessage = telegramSendMessage;
         this.telegramSendChatAction = telegramSendChatAction;
 
-        registerCommand("ask", askCommand);
-        registerCommand("askweb", askWebCommand);
+        registerCommand("chatgpt", askCommand);
+        registerCommand("chatgptweb", askWebCommand);
         registerCommand("hello", greetCommand);
         registerCommand("help", helpCommand);
         helpCommand.setCommandRegistry(commandRegistry);
         registerCommand("summary", summaryCommand);
         registerCommand("vanish", vanishCommand);
         registerCommand("joke", jokeCommand);
-        registerCommand("top", topCommand);
         registerCommand("temperature", new CommandWrapper(weatherForecastCommand, "temperature"));
         registerCommand("meteo", new CommandWrapper(weatherForecastCommand, "meteo"));
         registerCommand("weather", new CommandWrapper(weatherForecastCommand, "weather"));
-        registerCommand("weatherforecast", new CommandWrapper(weatherForecastCommand, "weatherforecast"));
+        registerCommand("forecast", new CommandWrapper(weatherForecastCommand, "weatherforecast"));
+        registerCommand("gemini", geminiCommand);
     }
 
     private void registerCommand(String commandName, Command command) {

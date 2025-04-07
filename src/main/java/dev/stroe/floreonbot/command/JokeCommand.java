@@ -1,28 +1,28 @@
 package dev.stroe.floreonbot.command;
 
 import org.springframework.stereotype.Component;
-import dev.stroe.floreonbot.service.ChatGPTService;
+import dev.stroe.floreonbot.service.GeminiService;
 import dev.stroe.floreonbot.service.TelegramSendMessageService;
 
 @Component
 public class JokeCommand implements Command {
     private final TelegramSendMessageService telegramSendMessage;
-    private final ChatGPTService chatGPTService;
+    private final GeminiService geminiService;
 
-    public JokeCommand(TelegramSendMessageService telegramSendMessage, ChatGPTService chatGPTService) {
+    public JokeCommand(TelegramSendMessageService telegramSendMessage, GeminiService geminiService) {
         this.telegramSendMessage = telegramSendMessage;
-        this.chatGPTService = chatGPTService;
+        this.geminiService = geminiService;
     }
 
     @Override
     public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
-        String gptResponse="";
+        String response;
         if(text == null || text.isEmpty()) {
-            gptResponse = chatGPTService.chatGPTResponse("Tell me a joke in romanian.", false);
+            response = geminiService.ask("Spune-mi o gluma.");
         } else {
-            gptResponse = chatGPTService.chatGPTResponse("Spune-mi o gluma/banc despre " + text, false);
+            response = geminiService.ask("Spune-mi o gluma despre " + text);
         }
-            telegramSendMessage.sendMessage(chatId, gptResponse, messageId);
+        telegramSendMessage.sendMessage(chatId, response, null);
     }
 
     @Override

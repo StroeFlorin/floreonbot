@@ -10,12 +10,15 @@ public class TelegramUpdateHandlerService {
     private final TelegramChatService chatService;
     private final TelegramMessageService messageService;
     private final TelegramCommandHandlerService commandHandler;
+    private final GeminiService geminiService;
     
     public TelegramUpdateHandlerService(
             TelegramUserService userService,
             TelegramChatService chatService, 
             TelegramMessageService messageService,
-            TelegramCommandHandlerService commandHandler) {
+            TelegramCommandHandlerService commandHandler,
+            GeminiService geminiService) {
+        this.geminiService = geminiService;
         this.userService = userService;
         this.chatService = chatService;
         this.messageService = messageService;
@@ -68,7 +71,6 @@ public class TelegramUpdateHandlerService {
         
         // Save message
         messageService.saveMessage(messageId, userId, chatId, date, text, replyToMessageId);
-        
         commandHandler.handleCommands(text, chatId, userId, messageId);
     }
 }
