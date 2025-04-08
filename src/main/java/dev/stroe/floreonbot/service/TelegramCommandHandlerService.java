@@ -9,7 +9,6 @@ import dev.stroe.floreonbot.command.*;
 @Service
 public class TelegramCommandHandlerService {
 
-
     private final TelegramSendMessageService telegramSendMessage;
     private final TelegramSendChatAction telegramSendChatAction;
     private final Map<String, Command> commandRegistry = new HashMap<>();
@@ -31,7 +30,8 @@ public class TelegramCommandHandlerService {
             JokeCommand jokeCommand,
             WeatherForecastCommand weatherForecastCommand,
             GeminiCommand geminiCommand,
-            DiceCommand diceCommand) {
+            DiceCommand diceCommand, 
+            SendPollCommand sendPollCommand) {
         this.telegramSendMessage = telegramSendMessage;
         this.telegramSendChatAction = telegramSendChatAction;
 
@@ -49,6 +49,7 @@ public class TelegramCommandHandlerService {
         registerCommand("forecast", new CommandWrapper(weatherForecastCommand, "forecast"));
         registerCommand("gemini", geminiCommand);
         registerCommand("dice", diceCommand);
+        registerCommand("poll", sendPollCommand);
     }
 
     private void registerCommand(String commandName, Command command) {

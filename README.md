@@ -45,8 +45,13 @@ FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, desi
   
 - **Vanish**
 
-  - Deletes a specific number of messages from the chat.
+  - Delete a specific number of messages from the chat.
   - Example Usage: `/vanish 30`
+  
+- **Group chat poll**
+
+  - Create a poll.
+  - Example Usage: `/What color is the Sun?, yellow, white`
 
 - **Planned Features**
 
