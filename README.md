@@ -1,29 +1,52 @@
 # FloreonBOT
 
-FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, designed to enhance group chat experiences by providing various utilities such as weather updates, conversation summaries, and AI-driven responses using ChatGPT. More features are planned to be added in the future.
+FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, designed to enhance group chat experiences by providing various utilities such as weather updates, conversation summaries, and AI-driven responses using AI. More features are planned to be added in the future.
 
 ## Features
 
 - **Weather Checking**
 
   - Provides real-time weather information for a specified location.
-  - Example Usage: `/weather Bucharest`
-  - Utilizes OpenWeather API.
+  - Example Usage: `/weather Bucharest` or `/temperature Bucharest` or `/forecast Bucharest` 
+  - Utilizes OpenWeather API and Open-meteo API.
 
 - **Conversation Summarization**
 
   - Generates a summary of conversations within a specified number of hours.
-  - Example Usage: `/summary 1` (Provides a summary of the last 1 hour of conversation.)
+  - Example Usage: `/summary 3` (Provides a summary of the last 3 hours of conversation in a group chat.)
+
+- **Ask Gemini**
+
+  - Allows users to ask questions and receive AI-generated responses from Gemini.
+  - Example Usage: `/Gemini What's the temperature of the Sun?`
 
 - **Ask ChatGPT**
 
   - Allows users to ask questions and receive AI-generated responses from ChatGPT.
-  - Example Usage: `/ask Why are the plants green?`
+  - Example Usage: `/chatgpt Why are the plants green?`
 
 - **Ask ChatGPT with Web Search**
 
   - Integrates web search capabilities to provide updated and relevant answers.
-  - Example Usage: `/askweb What happened today?`
+  - Example Usage: `/chatgptweb What happened today?`
+
+- **Joke**
+
+  - The bot sends a random joke based on specified categories or topics.
+  - Example Usage: 
+    - `/joke` (sends a random joke)
+    - `/joke programming` (sends a programming-related joke)
+    - `/joke dad` (sends a dad joke)
+
+- **Dice**
+
+  - Roll a dice.
+  - Example Usage: `/dice`
+  
+- **Vanish**
+
+  - Deletes a specific number of messages from the chat.
+  - Example Usage: `/vanish 30`
 
 - **Planned Features**
 
@@ -41,5 +64,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 - Telegram Bot API
 - OpenAI ChatGPT API
+- Gemini API
 - OpenWeather API (Free tier)
+- Open-meteo API
 

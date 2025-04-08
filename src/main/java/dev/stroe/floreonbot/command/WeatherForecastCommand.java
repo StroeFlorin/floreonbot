@@ -132,8 +132,8 @@ public class WeatherForecastCommand implements Command {
         StringBuilder message = new StringBuilder();
         JsonNode current = weatherData.get("current");
         
-        double currentTemp = current.get("temperature_2m").asDouble();
-        double feelsLikeTemp = current.get("apparent_temperature").asDouble();
+        int currentTemp = (int) Math.round(current.get("temperature_2m").asDouble());
+        int feelsLikeTemp = (int) Math.round(current.get("apparent_temperature").asDouble());
         
         message.append("Temperature in ").append(location).append(":\n\n");
         message.append("🌡️ Current: ").append(currentTemp).append("°C\n");
@@ -146,21 +146,18 @@ public class WeatherForecastCommand implements Command {
         StringBuilder message = new StringBuilder();
         message.append("Current Weather in ").append(location).append(":\n\n");
         
-        // Current weather
         JsonNode current = weatherData.get("current");
         int currentWeatherCode = current.get("weather_code").asInt();
         String weatherDescription = getWeatherDescription(currentWeatherCode);
         
-        // Extract current weather data
-        double currentTemp = current.get("temperature_2m").asDouble();
-        double feelsLikeTemp = current.get("apparent_temperature").asDouble();
+        int currentTemp = (int) Math.round(current.get("temperature_2m").asDouble());
+        int feelsLikeTemp = (int) Math.round(current.get("apparent_temperature").asDouble());
         int humidity = current.get("relative_humidity_2m").asInt();
-        double windSpeed = current.get("wind_speed_10m").asDouble();
+        int windSpeed = (int) Math.round(current.get("wind_speed_10m").asDouble());
         
-        // Get today's data from daily forecast
         JsonNode daily = weatherData.get("daily");
-        String sunrise = daily.get("sunrise").get(0).asText().substring(11, 16); // Extract HH:MM
-        String sunset = daily.get("sunset").get(0).asText().substring(11, 16);   // Extract HH:MM
+        String sunrise = daily.get("sunrise").get(0).asText().substring(11, 16);
+        String sunset = daily.get("sunset").get(0).asText().substring(11, 16);
         int todayPrecipitationChance = daily.get("precipitation_probability_max").get(0).asInt();
         
         message.append(weatherDescription).append("\n");
@@ -179,10 +176,7 @@ public class WeatherForecastCommand implements Command {
         StringBuilder message = new StringBuilder();
         message.append("Weather Forecast for ").append(location).append(" \n\n");
         
-        // Get today's data from daily forecast
         JsonNode daily = weatherData.get("daily");
-    
-        // Daily forecast
         JsonNode times = daily.get("time");
         JsonNode weatherCodes = daily.get("weather_code");
         JsonNode maxTemps = daily.get("temperature_2m_max");
@@ -192,22 +186,20 @@ public class WeatherForecastCommand implements Command {
         message.append("7-Day Forecast:\n\n");
         
         for (int i = 0; i < times.size(); i++) {
-            // Parse the date and get the day name
             LocalDate date = LocalDate.parse(times.get(i).asText());
             String dayName = i == 0 ? "Today" : date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
             
-            // Extract daily forecast data into variables
             int code = weatherCodes.get(i).asInt();
             String dayWeatherDesc = getWeatherDescription(code);
-            double minTemp = minTemps.get(i).asDouble();
-            double maxTemp = maxTemps.get(i).asDouble();
+            int minTemp = (int) Math.round(minTemps.get(i).asDouble());
+            int maxTemp = (int) Math.round(maxTemps.get(i).asDouble());
             int precipitationChance = precipProbability.get(i).asInt();
             
             message.append("• ").append(dayName).append(": ");
             message.append(dayWeatherDesc).append(", ");
             message.append("🌡️ ").append(minTemp).append("°C to ");
             message.append(maxTemp).append("°C, ");
-            message.append("🌧️ ").append(precipitationChance).append("% precipitation probability\n\n");
+            message.append("🌧️ ").append(precipitationChance).append("%\n\n");
         }
         
         return message.toString();

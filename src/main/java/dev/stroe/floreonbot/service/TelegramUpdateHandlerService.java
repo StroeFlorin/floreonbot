@@ -10,7 +10,6 @@ public class TelegramUpdateHandlerService {
     private final TelegramChatService chatService;
     private final TelegramMessageService messageService;
     private final TelegramCommandHandlerService commandHandler;
-    private final GeminiService geminiService;
     
     public TelegramUpdateHandlerService(
             TelegramUserService userService,
@@ -18,7 +17,6 @@ public class TelegramUpdateHandlerService {
             TelegramMessageService messageService,
             TelegramCommandHandlerService commandHandler,
             GeminiService geminiService) {
-        this.geminiService = geminiService;
         this.userService = userService;
         this.chatService = chatService;
         this.messageService = messageService;

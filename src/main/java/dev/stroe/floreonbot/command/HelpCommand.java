@@ -2,7 +2,7 @@ package dev.stroe.floreonbot.command;
 
 import java.util.Map;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 
 import dev.stroe.floreonbot.service.TelegramSendMessageService;
 
@@ -10,12 +10,11 @@ import dev.stroe.floreonbot.service.TelegramSendMessageService;
 public class HelpCommand implements Command {
     private final TelegramSendMessageService telegramSendMessage;
     private Map<String, Command> commandRegistry;
-    
-    @Value("${app.version}")
-    private String appVersion;
+    private final BuildProperties buildProperties;
 
-    public HelpCommand(TelegramSendMessageService telegramSendMessage) {
+    public HelpCommand(TelegramSendMessageService telegramSendMessage, BuildProperties buildProperties) {
         this.telegramSendMessage = telegramSendMessage;
+        this.buildProperties = buildProperties;
     }
     
     public void setCommandRegistry(Map<String, Command> commandRegistry) {
@@ -32,7 +31,7 @@ public class HelpCommand implements Command {
                        .append("\n");
         }
 
-        helpMessage.append("\nBot Version: ").append(appVersion);
+        helpMessage.append("\nBot Version: ").append(buildProperties.getVersion());
         
         telegramSendMessage.sendMessage(chatId, helpMessage.toString(), messageId);
     }

@@ -18,11 +18,11 @@ public class JokeCommand implements Command {
     public void execute(String commandName, String text, Long chatId, Long userId, Long messageId) {
         String response;
         if(text == null || text.isEmpty()) {
-            response = geminiService.ask("Spune-mi o gluma.");
+            response = geminiService.ask("Tell me a joke.");
         } else {
-            response = geminiService.ask("Spune-mi o gluma despre " + text);
+            response = geminiService.ask("Tell me a joke about " + text);
         }
-        telegramSendMessage.sendMessage(chatId, response, null);
+        telegramSendMessage.sendMessage(chatId, response, messageId);
     }
 
     @Override

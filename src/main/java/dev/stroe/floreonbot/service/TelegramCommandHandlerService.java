@@ -46,7 +46,7 @@ public class TelegramCommandHandlerService {
         registerCommand("temperature", new CommandWrapper(weatherForecastCommand, "temperature"));
         registerCommand("meteo", new CommandWrapper(weatherForecastCommand, "meteo"));
         registerCommand("weather", new CommandWrapper(weatherForecastCommand, "weather"));
-        registerCommand("forecast", new CommandWrapper(weatherForecastCommand, "weatherforecast"));
+        registerCommand("forecast", new CommandWrapper(weatherForecastCommand, "forecast"));
         registerCommand("gemini", geminiCommand);
         registerCommand("dice", diceCommand);
     }
