@@ -47,6 +47,6 @@ public class CurrencyConverterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "Convert currencies. Usage: 10 RON TO USD";
+        return "Convert currencies. Usage: /convert 10 RON TO USD";
     }
 }

@@ -76,4 +76,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - Gemini API
 - OpenWeather API (Free tier)
 - Open-meteo API
-
+- ExchangeRate-API (Free tier)
