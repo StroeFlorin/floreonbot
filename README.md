@@ -53,6 +53,10 @@ FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, desi
   - Create a poll.
   - Example Usage: `/What color is the Sun?, yellow, white`
 
+- **Currency converter**
+
+  - Example Usage: `/convert 10 EUR TO USD`
+
 - **Planned Features**
 
   - Additional functionalities will be added over time.

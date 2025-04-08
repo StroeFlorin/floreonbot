@@ -31,7 +31,8 @@ public class TelegramCommandHandlerService {
             WeatherForecastCommand weatherForecastCommand,
             GeminiCommand geminiCommand,
             DiceCommand diceCommand, 
-            SendPollCommand sendPollCommand) {
+            SendPollCommand sendPollCommand,
+            CurrencyConverterCommand currencyConverterCommand) {
         this.telegramSendMessage = telegramSendMessage;
         this.telegramSendChatAction = telegramSendChatAction;
 
@@ -50,6 +51,7 @@ public class TelegramCommandHandlerService {
         registerCommand("gemini", geminiCommand);
         registerCommand("dice", diceCommand);
         registerCommand("poll", sendPollCommand);
+        registerCommand("convert", currencyConverterCommand);  
     }
 
     private void registerCommand(String commandName, Command command) {
