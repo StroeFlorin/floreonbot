@@ -1,6 +1,6 @@
 # FloreonBOT
 
-FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, designed to enhance group chat experiences by providing various utilities such as weather updates, conversation summaries, and AI-driven responses using AI. More features are planned to be added in the future.
+FloreonBOT is an open-source Telegram Bot built using **Java with Spring**, designed to enhance group chat experiences by providing various utilities such as weather updates, conversation summaries, and AI-driven responses. More features are planned to be added in the future.
 
 ## Features
 
