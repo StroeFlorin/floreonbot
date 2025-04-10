@@ -33,6 +33,10 @@ public class VanishCommand implements Command {
                 telegramSendMessage.sendMessage(chatId, "Please provide a number greater than 0.", messageId);
                 return;
             }
+            if(numberOfMessages > 10) {
+                telegramSendMessage.sendMessage(chatId, "Please provide a number less than 10.", messageId);
+                return;
+            }
 
             List<TelegramMessage> messages = telegramMessageRepository.findLatestMessagesByChatIdAndUserId(chatId,
                     userId, numberOfMessages);
@@ -42,16 +46,16 @@ public class VanishCommand implements Command {
                 return;
             }
 
-            for (TelegramMessage message : messages) {
-                telegramMessageRepository.delete(message);
-            }
-            
             List<Long> messageIds = messages.stream()
                     .map(TelegramMessage::getMessageId)
                     .collect(Collectors.toList());
             telegramDeleteMessageService.deleteMessages(chatId, messageIds);
 
-            telegramSendMessage.sendMessage(chatId, "Deleted " + (messageIds.size() - 1) + " messages from " + messages.get(0).getFrom().getFullName() + "!", null);
+            for (TelegramMessage message : messages) {
+                telegramMessageRepository.deleteById(message.getMessageId());
+            }
+
+            telegramSendMessage.sendMessage(chatId, "Deleted " + (messageIds.size()) + " messages from " + messages.get(0).getFrom().getFullName() + "!", null);
 
         } catch (NumberFormatException e) {
             telegramSendMessage.sendMessage(chatId, "Please provide a valid number.", messageId);
