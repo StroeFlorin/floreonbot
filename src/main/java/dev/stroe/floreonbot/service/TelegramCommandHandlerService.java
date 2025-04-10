@@ -25,7 +25,6 @@ public class TelegramCommandHandlerService {
             SummaryCommand summaryCommand,
             ChatGPTWebCommand askWebCommand,
             TelegramSendChatAction telegramSendChatAction,
-            WeatherCommand weatherCommand,
             VanishCommand vanishCommand,
             JokeCommand jokeCommand,
             WeatherForecastCommand weatherForecastCommand,
