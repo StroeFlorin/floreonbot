@@ -50,7 +50,7 @@ public class TelegramCommandHandlerService {
         registerCommand("gemini", geminiCommand);
         registerCommand("dice", diceCommand);
         registerCommand("poll", sendPollCommand);
-        registerCommand("convert", currencyConverterCommand);  
+        registerCommand("convert", currencyConverterCommand);
     }
 
     private void registerCommand(String commandName, Command command) {
