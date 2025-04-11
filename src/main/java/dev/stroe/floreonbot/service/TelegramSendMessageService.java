@@ -16,15 +16,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class TelegramSendMessageService {
     private static final String TELEGRAM_API_URL = "https://api.telegram.org/bot%s/sendMessage";
     private final RestTemplate restTemplate;
     private final String botToken;
+    private final ObjectMapper objectMapper;
+    private final TelegramUserService telegramUserService;
+    private final TelegramChatService telegramChatService;
+    private final TelegramMessageService telegramMessageService;
 
-    public TelegramSendMessageService(@Value("${telegram.bot.token}") String botToken, RestTemplate restTemplate) {
+    public TelegramSendMessageService(
+            @Value("${telegram.bot.token}") String botToken,
+            RestTemplate restTemplate,
+            ObjectMapper objectMapper,
+            TelegramUserService telegramUserService,
+            TelegramChatService telegramChatService,
+            TelegramMessageService telegramMessageService) {
         this.botToken = botToken;
         this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
+        this.telegramUserService = telegramUserService;
+        this.telegramChatService = telegramChatService;
+        this.telegramMessageService = telegramMessageService;
     }
 
     private Map<String, String> createMessageBody(String chatId, String message, Long replyToMessageId) {
@@ -47,13 +64,36 @@ public class TelegramSendMessageService {
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(body, headers);
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(uri, requestEntity, String.class);
-            if (!response.getStatusCode().is2xxSuccessful()) {
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                // Parse the response and save the sent message
+                JsonNode responseBody = objectMapper.readTree(response.getBody());
+                if (responseBody.path("ok").asBoolean(false)) {
+                    JsonNode resultNode = responseBody.path("result");
+                    Long sentMessageId = resultNode.path("message_id").asLong();
+                    Integer date = resultNode.path("date").asInt();
+                    String text = resultNode.path("text").asText();
+
+                    // Handle bot user and chat information
+                    JsonNode fromNode = resultNode.path("from");
+                    JsonNode chatNode = resultNode.path("chat");
+                    Long botUserId = telegramUserService.handleUserInformation(fromNode);
+                    Long savedChatId = telegramChatService.handleChatInformation(chatNode);
+
+                    // Save the bot's message
+                    // Pass null for replyToMessageId as this is the bot's own message, not a reply in the DB sense
+                    telegramMessageService.saveMessage(sentMessageId, botUserId, savedChatId, date, text, null);
+                } else {
+                     System.err.println("Error sending message: Telegram API returned ok=false. Response: " + response.getBody());
+                }
+            } else {
                 System.err.println("Error sending message: Telegram API returned status " + response.getStatusCode());
             }
         } catch (HttpClientErrorException | HttpServerErrorException ex) {
             System.err.println("Telegram API error: " + ex.getStatusCode() + " - " + ex.getResponseBodyAsString());
         } catch (Exception ex) {
-            System.err.println("Error sending message: " + ex.getMessage());
+            // Catch Jackson parsing errors as well
+            System.err.println("Error sending message or processing response: " + ex.getMessage());
+            ex.printStackTrace(); // Print stack trace for detailed debugging
         }
     }
 }

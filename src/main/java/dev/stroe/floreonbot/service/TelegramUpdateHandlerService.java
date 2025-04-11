@@ -1,26 +1,31 @@
 package dev.stroe.floreonbot.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import dev.stroe.floreonbot.command.ChatGPTCommand;
 import org.springframework.stereotype.Service;
+import java.util.Random;
 
 @Service
 public class TelegramUpdateHandlerService {
-    
+
+   
     private final TelegramUserService userService;
     private final TelegramChatService chatService;
     private final TelegramMessageService messageService;
     private final TelegramCommandHandlerService commandHandler;
+    private final ChatGPTRandomInteractionService chatGPTRandomInteractionService;
     
     public TelegramUpdateHandlerService(
             TelegramUserService userService,
             TelegramChatService chatService, 
             TelegramMessageService messageService,
             TelegramCommandHandlerService commandHandler,
-            GeminiService geminiService) {
+            ChatGPTRandomInteractionService chatGPTRandomInteractionService) {
         this.userService = userService;
         this.chatService = chatService;
         this.messageService = messageService;
         this.commandHandler = commandHandler;
+        this.chatGPTRandomInteractionService = chatGPTRandomInteractionService;
     }
     
     public void processUpdate(JsonNode update) {
@@ -69,6 +74,12 @@ public class TelegramUpdateHandlerService {
         
         // Save message
         messageService.saveMessage(messageId, userId, chatId, date, text, replyToMessageId);
+        
+        // Make it a 10% chance to call the random interaction
+        if (new Random().nextInt(100) < 10 || text.toUpperCase().contains("@FLOREON_BOT") || text.toUpperCase().contains("FLOREON_BOT") || text.toUpperCase().contains("FLOREONBOT")) {
+            chatGPTRandomInteractionService.randomInteraction(chatId);
+        }
+        
         commandHandler.handleCommands(text, chatId, userId, messageId);
     }
 }
