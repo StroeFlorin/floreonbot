@@ -42,8 +42,6 @@ public class ChatGPTCommand implements Command {
 
             String messageToBeSentToChatGPT = contextBuilder.toString();
 
-            System.out.println("Message to be sent to ChatGPT: " + messageToBeSentToChatGPT);
-
             String gptResponse = chatGPT.chatGPTResponse(messageToBeSentToChatGPT, false);
             telegramSendMessage.sendMessage(chatId, gptResponse, messageId);
         } else {

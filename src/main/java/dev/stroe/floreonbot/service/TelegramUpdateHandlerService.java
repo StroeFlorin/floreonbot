@@ -75,8 +75,8 @@ public class TelegramUpdateHandlerService {
         // Save message
         messageService.saveMessage(messageId, userId, chatId, date, text, replyToMessageId);
         
-        // Make it a 10% chance to call the random interaction
-        if (new Random().nextInt(100) < 10 || text.toUpperCase().contains("@FLOREON_BOT") || text.toUpperCase().contains("FLOREON_BOT") || text.toUpperCase().contains("FLOREONBOT")) {
+        // Make it a 5% chance to call the random interaction
+        if (new Random().nextInt(100) < 5 || text.toUpperCase().contains("@FLOREON_BOT") || text.toUpperCase().contains("FLOREON_BOT") || text.toUpperCase().contains("FLOREONBOT")) {
             chatGPTRandomInteractionService.randomInteraction(chatId);
         }
         
