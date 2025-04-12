@@ -45,7 +45,7 @@ public class ChatGPTWebCommand implements Command {
             String gptResponse = chatGPT.chatGPTResponse(messageToBeSentToChatGPT, true);
             telegramSendMessage.sendMessage(chatId, gptResponse, messageId);
         } else {
-            telegramSendMessage.sendMessage(chatId, "Please provide a question after /askweb command!", messageId);
+            telegramSendMessage.sendMessage(chatId, "Please provide a question after /chatgptweb command!", messageId);
         }
     }
 

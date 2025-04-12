@@ -46,5 +46,4 @@ public class ChatGPTRandomInteractionService {
         String gptResponse = geminiService.ask(messageToBeSentToChatGPT);
         telegramSendMessage.sendMessage(chatId, gptResponse, null);
     }
-
 }

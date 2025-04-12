@@ -1,7 +1,6 @@
 package dev.stroe.floreonbot.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import dev.stroe.floreonbot.command.ChatGPTCommand;
 import org.springframework.stereotype.Service;
 import java.util.Random;
 

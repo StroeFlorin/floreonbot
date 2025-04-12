@@ -44,14 +44,21 @@ public class TelegramSendMessageService {
         this.telegramMessageService = telegramMessageService;
     }
 
-    private Map<String, String> createMessageBody(String chatId, String message, Long replyToMessageId) {
-        Map<String, String> body = new HashMap<>();
+    private Map<String, Object> createMessageBody(String chatId, String message, Long replyToMessageId) {
+        Map<String, Object> body = new HashMap<>();
         body.put("chat_id", chatId);
         body.put("text", message);
         body.put("disable_notification", "True");
+
         if (replyToMessageId != null) {
             body.put("reply_to_message_id", String.valueOf(replyToMessageId));
         }
+
+        // Add link_preview_options with is_disabled = true
+        Map<String, Object> linkPreviewOptions = new HashMap<>();
+        linkPreviewOptions.put("is_disabled", true);
+        body.put("link_preview_options", linkPreviewOptions);
+
         return body;
     }
 
@@ -60,8 +67,8 @@ public class TelegramSendMessageService {
                 .build().toUri();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, String> body = createMessageBody(String.valueOf(chatId), message, replyToMessageId);
-        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(body, headers);
+        Map<String, Object> body = createMessageBody(String.valueOf(chatId), message, replyToMessageId);
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(uri, requestEntity, String.class);
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
@@ -97,4 +104,3 @@ public class TelegramSendMessageService {
         }
     }
 }
-
