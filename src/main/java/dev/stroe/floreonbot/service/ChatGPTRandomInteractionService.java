@@ -41,9 +41,9 @@ public class ChatGPTRandomInteractionService {
 
         contextBuilder.append("Your response should be like this: <your message> without mentioning your name!");
 
-        String messageToBeSentToChatGPT = contextBuilder.toString();
+        String messageToBeSentToGemini= contextBuilder.toString();
 
-        String gptResponse = geminiService.ask(messageToBeSentToChatGPT);
-        telegramSendMessage.sendMessage(chatId, gptResponse, null);
+        String geminiResponse = geminiService.ask(messageToBeSentToGemini);
+        telegramSendMessage.sendMessage(chatId, geminiResponse, null);
     }
 }

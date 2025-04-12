@@ -25,7 +25,7 @@ public class CurrencyConverterCommand implements Command {
         String[] parts = text.trim().split("\\s+");
         if (parts.length != 4 || !parts[2].equalsIgnoreCase("TO")) {
             telegramSendMessageService.sendMessage(chatId,
-            "Invalid format. Usage: /convert 10 RON TO USD", messageId);
+                    "Invalid format. Usage: /convert 10 RON to USD", messageId);
             return;
         }
 
@@ -36,10 +36,10 @@ public class CurrencyConverterCommand implements Command {
 
             logger.info("Converting {} {} to {}", amount, fromCurrency, toCurrency);
             double conversionRate = currencyConverterService.convertCurrency(fromCurrency, toCurrency, amount);
-            String responseMessage = String.format("%s %s = %s %s", 
+            String responseMessage = String.format("%s %s = %s %s",
                     formatNumber(amount), fromCurrency,
                     formatNumber(conversionRate), toCurrency);
-  
+
             telegramSendMessageService.sendMessage(chatId, responseMessage, messageId);
 
         } catch (NumberFormatException e) {
@@ -60,7 +60,7 @@ public class CurrencyConverterCommand implements Command {
                     "An unexpected error occurred. Please try again later.", messageId);
         }
     }
-    
+
     private String getUserFriendlyErrorMessage(CurrencyConversionException e) {
         switch (e.getErrorType()) {
             case "unsupported-code":
