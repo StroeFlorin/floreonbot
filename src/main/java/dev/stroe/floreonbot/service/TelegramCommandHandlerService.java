@@ -31,7 +31,10 @@ public class TelegramCommandHandlerService {
             GeminiCommand geminiCommand,
             DiceCommand diceCommand, 
             SendPollCommand sendPollCommand,
-            CurrencyConverterCommand currencyConverterCommand) {
+            CurrencyConverterCommand currencyConverterCommand,
+            GenerateImageCommand generateImageCommand // Add new command
+            // TelegramSendPhotoService is implicitly used by GenerateImageCommand, no need to inject here unless used directly
+            ) {
         this.telegramSendMessage = telegramSendMessage;
         this.telegramSendChatAction = telegramSendChatAction;
 
@@ -51,6 +54,7 @@ public class TelegramCommandHandlerService {
         registerCommand("dice", diceCommand);
         registerCommand("poll", sendPollCommand);
         registerCommand("convert", currencyConverterCommand);
+        registerCommand("generateimage", generateImageCommand); // Register new command
     }
 
     private void registerCommand(String commandName, Command command) {
