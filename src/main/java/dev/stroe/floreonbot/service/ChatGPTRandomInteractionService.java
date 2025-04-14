@@ -10,16 +10,17 @@ import dev.stroe.floreonbot.repository.TelegramMessageRepository;
 
 @Service
 public class ChatGPTRandomInteractionService {
-    private final GeminiService geminiService;
+    //private final GeminiService geminiService;
+    private final ChatGPTService chatGPTService;
     private final TelegramSendMessageService telegramSendMessage;
     private final TelegramMessageRepository telegramMessageRepository;
 
     public ChatGPTRandomInteractionService(TelegramSendMessageService telegramSendMessage,
-            TelegramMessageRepository telegramMessageRepository, GeminiService geminiService) {
+            TelegramMessageRepository telegramMessageRepository, ChatGPTService chatGPTService) {
 
         this.telegramSendMessage = telegramSendMessage;
         this.telegramMessageRepository = telegramMessageRepository;
-        this.geminiService = geminiService;
+        this.chatGPTService = chatGPTService;
     }
 
     // Implement the logic for random interactions with ChatGPT here
@@ -41,9 +42,9 @@ public class ChatGPTRandomInteractionService {
 
         contextBuilder.append("Your response should be like this: <your message> without mentioning your name!");
 
-        String messageToBeSentToGemini= contextBuilder.toString();
+        String messageToBeSentToChatGPT = contextBuilder.toString();
 
-        String geminiResponse = geminiService.ask(messageToBeSentToGemini);
-        telegramSendMessage.sendMessage(chatId, geminiResponse, null);
+        String chatGPTResponse = chatGPTService.chatGPTResponse(messageToBeSentToChatGPT, false);
+        telegramSendMessage.sendMessage(chatId, chatGPTResponse, null);
     }
 }

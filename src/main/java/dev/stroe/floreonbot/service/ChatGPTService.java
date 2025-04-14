@@ -26,7 +26,7 @@ public class ChatGPTService {
         if(webSearch) {
             model = ChatModel.GPT_4O_MINI_SEARCH_PREVIEW;
         } else {
-            model = ChatModel.GPT_4O_MINI;
+            model = ChatModel.GPT_4_1_MINI;
         }
         
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
