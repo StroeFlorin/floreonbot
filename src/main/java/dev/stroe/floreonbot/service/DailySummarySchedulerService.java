@@ -50,13 +50,13 @@ public class DailySummarySchedulerService {
                         todayStart,
                         todayEnd);
                 
-                StringBuilder messagesToBeSentForSchedule = new StringBuilder();
+                StringBuilder messagesToBeSentForSummary = new StringBuilder();
                 for(TelegramMessage message : messagesList) {
-                    messagesToBeSentForSchedule.append(message.getFrom().getFullName() + ": " + message.getText());
+                    messagesToBeSentForSummary.append(message.getFrom().getFullName() + ": " + message.getText());
                 }
 
-                messagesToBeSentForSchedule.insert(0, "Please make a very short summary of the conversation from today in the language of the context:\n ");
-                String summaryOfConversation = geminiService.ask(messagesToBeSentForSchedule.toString());
+                messagesToBeSentForSummary.insert(0, "Please make a very short summary of the conversation from today in the language of the context:\n ");
+                String summaryOfConversation = geminiService.ask(messagesToBeSentForSummary.toString());
                 summaryOfConversation = "Summary of today's conversation:\n" + summaryOfConversation;
 
                 if (topChatters != null && !topChatters.isEmpty()) {
