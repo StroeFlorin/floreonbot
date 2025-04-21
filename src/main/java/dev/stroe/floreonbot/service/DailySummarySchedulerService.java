@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import dev.stroe.floreonbot.entity.TelegramChat;
+import dev.stroe.floreonbot.entity.TelegramMessage;
 import dev.stroe.floreonbot.entity.TelegramUser;
 import dev.stroe.floreonbot.repository.TelegramChatRepository;
 import dev.stroe.floreonbot.repository.TelegramMessageRepository;
@@ -17,15 +18,17 @@ public class DailySummarySchedulerService {
     private final TelegramSendMessageService telegramSendMessageService;
     private final TelegramChatRepository telegramChatRepository;
     private final TelegramMessageRepository telegramMessageRepository;
+    private final GeminiService geminiService;
     private LocalDate today;
     private long todayStart;
     private long todayEnd;
 
     public DailySummarySchedulerService(TelegramSendMessageService telegramSendMessageService,
-            TelegramMessageRepository telegramMessageRepository, TelegramChatRepository telegramChatRepository) {
+            TelegramMessageRepository telegramMessageRepository, TelegramChatRepository telegramChatRepository, GeminiService geminiService) {
         this.telegramChatRepository = telegramChatRepository;
         this.telegramSendMessageService = telegramSendMessageService;
         this.telegramMessageRepository = telegramMessageRepository;
+        this.geminiService = geminiService;
     }
 
     @Scheduled(cron = "0 59 23 * * *")
@@ -41,7 +44,21 @@ public class DailySummarySchedulerService {
                         currentChatId, 
                         todayStart,
                         todayEnd);
+
+                List<TelegramMessage> messagesList = telegramMessageRepository.findByChatIdAndDateBetween(
+                        currentChatId, 
+                        todayStart,
+                        todayEnd);
                 
+                StringBuilder messagesToBeSentForSchedule = new StringBuilder();
+                for(TelegramMessage message : messagesList) {
+                    messagesToBeSentForSchedule.append(message.getFrom().getFullName() + ": " + message.getText());
+                }
+
+                messagesToBeSentForSchedule.insert(0, "Please make a very short summary of the conversation from today in the language of the context:\n ");
+                String summaryOfConversation = geminiService.ask(messagesToBeSentForSchedule.toString());
+                summaryOfConversation = "Summary of today's conversation:\n" + summaryOfConversation;
+
                 if (topChatters != null && !topChatters.isEmpty()) {
                     StringBuilder message = new StringBuilder("Today's most active chatters:\n\n");
                     
@@ -57,6 +74,7 @@ public class DailySummarySchedulerService {
                     }
                     
                     telegramSendMessageService.sendMessage(currentChatId, message.toString(), null);
+                    telegramSendMessageService.sendMessage(currentChatId, summaryOfConversation, null);
                 }
         }
     }
