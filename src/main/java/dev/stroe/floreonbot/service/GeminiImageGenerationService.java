@@ -23,7 +23,7 @@ import java.util.Optional;
 public class GeminiImageGenerationService {
 
     private static final Logger log = LoggerFactory.getLogger(GeminiImageGenerationService.class);
-    private static final String GEMINI_IMAGE_MODEL_ID = "gemini-2.0-flash-exp-image-generation";
+    private static final String GEMINI_IMAGE_MODEL_ID = "gemini-2.0-flash";
     private static final String GEMINI_IMAGE_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_IMAGE_MODEL_ID + ":generateContent";
 
     private final RestTemplate restTemplate;

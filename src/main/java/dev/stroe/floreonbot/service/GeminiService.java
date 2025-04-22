@@ -16,7 +16,7 @@ public class GeminiService {
 
     private final RestTemplate restTemplate;
     private final String geminiApiKey;
-    private static final String GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+    private static final String GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-04-17:generateContent";
 
     public GeminiService(
             RestTemplate restTemplate,
