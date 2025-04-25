@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import dev.stroe.floreonbot.entity.TelegramMessage;
+import dev.stroe.floreonbot.entity.ChatInteractionStatus;
 import dev.stroe.floreonbot.repository.TelegramMessageRepository;
+import dev.stroe.floreonbot.repository.ChatInteractionStatusRepository;
 
 @Service
 public class ChatGPTRandomInteractionService {
@@ -14,17 +16,19 @@ public class ChatGPTRandomInteractionService {
     private final ChatGPTService chatGPTService;
     private final TelegramSendMessageService telegramSendMessage;
     private final TelegramMessageRepository telegramMessageRepository;
+    private final ChatInteractionStatusRepository chatInteractionStatusRepository;
 
     public ChatGPTRandomInteractionService(TelegramSendMessageService telegramSendMessage,
-            TelegramMessageRepository telegramMessageRepository, ChatGPTService chatGPTService, GeminiService geminiService) {
+            TelegramMessageRepository telegramMessageRepository, ChatGPTService chatGPTService, GeminiService geminiService,
+            ChatInteractionStatusRepository chatInteractionStatusRepository) {
 
         this.telegramSendMessage = telegramSendMessage;
         this.telegramMessageRepository = telegramMessageRepository;
         this.chatGPTService = chatGPTService;
         this.geminiService = geminiService;
+        this.chatInteractionStatusRepository = chatInteractionStatusRepository;
     }
 
-    // Implement the logic for random interactions with ChatGPT here
     public void randomInteraction(Long chatId) {
         // Get the last 20 messages from the chat
         List<TelegramMessage> lastMessages = telegramMessageRepository.findLatestMessagesByChatId(chatId, 20);

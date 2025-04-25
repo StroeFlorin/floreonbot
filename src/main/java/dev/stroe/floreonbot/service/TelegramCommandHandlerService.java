@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import dev.stroe.floreonbot.command.*;
+import dev.stroe.floreonbot.command.ToggleChatInteractionCommand;
 
 @Service
 public class TelegramCommandHandlerService {
@@ -32,8 +33,8 @@ public class TelegramCommandHandlerService {
             DiceCommand diceCommand, 
             SendPollCommand sendPollCommand,
             CurrencyConverterCommand currencyConverterCommand,
-            GenerateImageCommand generateImageCommand 
-            ) {
+            GenerateImageCommand generateImageCommand,
+            ToggleChatInteractionCommand toggleChatInteractionCommand) {
         this.telegramSendMessage = telegramSendMessage;
         this.telegramSendChatAction = telegramSendChatAction;
 
@@ -53,6 +54,7 @@ public class TelegramCommandHandlerService {
         registerCommand("dice", diceCommand);
         registerCommand("poll", sendPollCommand);
         registerCommand("convert", currencyConverterCommand);
+        registerCommand("togglechat", toggleChatInteractionCommand);
     }
 
     private void registerCommand(String commandName, Command command) {
