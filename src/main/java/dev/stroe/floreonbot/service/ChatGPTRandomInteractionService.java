@@ -6,17 +6,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import dev.stroe.floreonbot.entity.TelegramMessage;
-import dev.stroe.floreonbot.entity.ChatInteractionStatus;
 import dev.stroe.floreonbot.repository.TelegramMessageRepository;
 import dev.stroe.floreonbot.repository.ChatInteractionStatusRepository;
 
 @Service
 public class ChatGPTRandomInteractionService {
     private final GeminiService geminiService;
-    private final ChatGPTService chatGPTService;
     private final TelegramSendMessageService telegramSendMessage;
     private final TelegramMessageRepository telegramMessageRepository;
-    private final ChatInteractionStatusRepository chatInteractionStatusRepository;
+
 
     public ChatGPTRandomInteractionService(TelegramSendMessageService telegramSendMessage,
             TelegramMessageRepository telegramMessageRepository, ChatGPTService chatGPTService, GeminiService geminiService,
@@ -24,9 +22,7 @@ public class ChatGPTRandomInteractionService {
 
         this.telegramSendMessage = telegramSendMessage;
         this.telegramMessageRepository = telegramMessageRepository;
-        this.chatGPTService = chatGPTService;
         this.geminiService = geminiService;
-        this.chatInteractionStatusRepository = chatInteractionStatusRepository;
     }
 
     public void randomInteraction(Long chatId) {
