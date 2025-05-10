@@ -16,6 +16,7 @@ public class TelegramUpdateHandlerService {
     private final TelegramCommandHandlerService commandHandler;
     private final ChatGPTRandomInteractionService chatGPTRandomInteractionService;
     private final ChatInteractionStatusRepository chatInteractionStatusRepository;
+    private final DiscoverCommandService discoverCommandService;
 
     public TelegramUpdateHandlerService(
             TelegramUserService userService,
@@ -23,13 +24,15 @@ public class TelegramUpdateHandlerService {
             TelegramMessageService messageService,
             TelegramCommandHandlerService commandHandler,
             ChatGPTRandomInteractionService chatGPTRandomInteractionService,
-            ChatInteractionStatusRepository chatInteractionStatusRepository) {
+            ChatInteractionStatusRepository chatInteractionStatusRepository,
+            DiscoverCommandService discoverCommandService) {
         this.userService = userService;
         this.chatService = chatService;
         this.messageService = messageService;
         this.commandHandler = commandHandler;
         this.chatGPTRandomInteractionService = chatGPTRandomInteractionService;
         this.chatInteractionStatusRepository = chatInteractionStatusRepository;
+        this.discoverCommandService = discoverCommandService;
     }
 
     public void processUpdate(JsonNode update) {
@@ -89,9 +92,14 @@ public class TelegramUpdateHandlerService {
         if (text.toUpperCase().contains("FLOREON_BOT")
          || text.toUpperCase().contains("FLOREONBOT")
          || text.toUpperCase().contains("FLOREONTEST_BOT")) {
-            chatGPTRandomInteractionService.randomInteraction(chatId);
+            String commandToBeFound = discoverCommandService.discoverCommand(text);
+            if(commandToBeFound.equals("No command found")) {
+                chatGPTRandomInteractionService.randomInteraction(chatId);
+            } else {
+                text = commandToBeFound;
+            }
         } else if (new Random().nextInt(100) < percentage && status) {
-            chatGPTRandomInteractionService.randomInteraction(chatId);
+             chatGPTRandomInteractionService.randomInteraction(chatId);
         }
 
         commandHandler.handleCommands(text, chatId, userId, messageId);
